@@ -17,7 +17,7 @@ jobs:
       - name: Setup Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: wasm32-unknown-unknown
+          targets: wasm32v1-none
 
       - name: Cache Cargo Dependencies
         uses: actions/cache@v4
@@ -38,7 +38,9 @@ jobs:
 
       - name: Build Contracts
         run: |
-          stellar contract build
+          cargo build --target wasm32v1-none --release -p escrow
+          cargo build --target wasm32v1-none --release -p reputation
+          cargo build --target wasm32v1-none --release -p escrow_factory
 
       - name: Run Cargo Tests
         run: |

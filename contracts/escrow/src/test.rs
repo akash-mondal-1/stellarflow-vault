@@ -14,10 +14,7 @@ use escrow_factory::{EscrowFactoryContract, EscrowFactoryContractClient};
 // In Cargo, paths are resolved relative to the crate's Cargo.toml directory.
 mod escrow_wasm {
     soroban_sdk::contractimport!(
-        file = concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/../../target/wasm32v1-none/release/escrow.wasm"
-        )
+        file = "../../target/wasm32v1-none/release/escrow.wasm"
     );
 }
 
