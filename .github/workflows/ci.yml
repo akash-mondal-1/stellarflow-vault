@@ -40,7 +40,7 @@ jobs:
         run: |
           cargo build --target wasm32v1-none --release -p escrow
           cargo build --target wasm32v1-none --release -p reputation
-          cargo build --target wasm32v1-none --release -p escrow_factory
+          cargo build --target wasm32v1-none --release -p escrow-factory
 
       - name: Run Cargo Tests
         run: |
