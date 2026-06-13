@@ -1,88 +1,80 @@
 name: CI/CD Pipeline
 
 on:
-push:
-branches:
-- main
-- master
-pull_request:
-branches:
-- main
-- master
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
-rust-tests:
-name: Rust Contracts Tests
-runs-on: ubuntu-latest
+  rust-tests:
+    name: Rust Contracts Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-```
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v4
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32v1-none
 
-  - name: Setup Rust Toolchain
-    uses: dtolnay/rust-toolchain@stable
-    with:
-      targets: wasm32v1-none
+      - name: Cache Cargo Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
 
-  - name: Cache Cargo Dependencies
-    uses: actions/cache@v4
-    with:
-      path: |
-        ~/.cargo/bin
-        ~/.cargo/registry
-        ~/.cargo/git
-        target
-      key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      restore-keys: |
-        ${{ runner.os }}-cargo-
+      - name: Install Stellar CLI
+        run: |
+          cargo install --locked stellar-cli --version 22.0.1 --features opt || true
 
-  - name: Install Stellar CLI
-    run: cargo install --locked stellar-cli --version 22.0.1 --features opt || true
+      - name: Build Contracts
+        run: |
+          cargo build --target wasm32v1-none --release -p escrow
+          cargo build --target wasm32v1-none --release -p reputation
+          cargo build --target wasm32v1-none --release -p escrow-factory
 
-  - name: Build Reputation Contract
-    run: cargo build --target wasm32v1-none --release -p reputation
+      - name: Run Cargo Tests
+        run: |
+          cargo test --verbose -j 1
 
-  - name: Build Escrow Factory Contract
-    run: cargo build --target wasm32v1-none --release -p escrow-factory
+  frontend-tests:
+    name: Frontend Tests & Build
+    runs-on: ubuntu-latest
+    needs: rust-tests
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-  - name: Build Escrow Contract
-    run: cargo build --target wasm32v1-none --release -p escrow
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
-  - name: Run Cargo Tests
-    run: cargo test --verbose -j 1
-```
+      - name: Install Dependencies
+        working-directory: frontend
+        run: npm install --legacy-peer-deps
 
-frontend-tests:
-name: Frontend Tests & Build
-runs-on: ubuntu-latest
-needs: rust-tests
+      - name: Run ESLint Linting
+        working-directory: frontend
+        run: npm run lint
 
-```
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v4
+      - name: Run Vitest Unit Tests
+        run: |
+          npx vitest run
+        working-directory: frontend
 
-  - name: Setup Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: '22'
-      cache: npm
-      cache-dependency-path: frontend/package-lock.json
-
-  - name: Install Dependencies
-    working-directory: frontend
-    run: npm install --legacy-peer-deps
-
-  - name: Run ESLint
-    working-directory: frontend
-    run: npm run lint
-
-  - name: Run Vitest
-    working-directory: frontend
-    run: npx vitest run
-
-  - name: Build Frontend
-    working-directory: frontend
-    run: npm run build
-```
+      - name: Build Frontend React App
+        run: |
+          npm run build
+        working-directory: frontend
