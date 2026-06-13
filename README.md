@@ -6,6 +6,90 @@ Clients can lock budgets in escrow, dynamically configure milestone deliverables
 
 ---
 
+## Live Demo
+
+**Vercel Deployment:**
+https://stellarflow-vault-d1nz.vercel.app/
+
+**Demo Video (Unlisted YouTube):**
+https://youtu.be/X1uhvF7iCZA
+
+---
+
+## Smart Contract Deployment
+
+### Reputation Contract
+
+```text
+CD3GUCIRBR3QB4HWFJR6R5FJDZBVZWDW2ZJMRRY5HYY4YV2PYPYAHRT4
+```
+
+### Escrow Factory Contract
+
+```text
+CATSAMXGYG55ZGYBAEFBQYFL6SSTGU2AZ4M7UXGB4SGWN4CSE24VRRHA
+```
+
+### Escrow WASM Hash
+
+```text
+82528c3bf10a76124873e5b61c9fd1c0023c8782a0b0037941ea069926341454
+```
+
+---
+
+## Contract Interaction Transaction Hash
+
+The following transaction was executed successfully on Stellar Testnet during contract initialization and configuration:
+
+```text
+04c7d686e61f5b6ce8af660cfca5c33f9e815df42097c15b7de909f0bc92196f
+```
+
+---
+
+## CI/CD Verification
+
+The project uses GitHub Actions to automatically:
+
+* Build Soroban smart contracts
+* Execute Rust contract tests
+* Run frontend linting
+* Execute Vitest unit tests
+* Build the React frontend
+
+Pipeline Status:
+
+* Rust Contracts Tests ✅
+* Frontend Tests & Build ✅
+
+---
+
+## Screenshots
+
+The repository includes screenshots demonstrating:
+
+* Mobile Responsive Dashboard
+* Mobile Create Project View
+* Mobile Project Details View
+* Reputation Tracking Page
+* Activity Feed
+* CI/CD Pipeline Success
+* Test Suite Passing (3+ Tests)
+
+Screenshots are available inside the `screenshots/` directory.
+
+---
+
+## Demo Mode
+
+For demonstration and judging purposes, StellarFlow Vault includes a built-in Mock Mode that simulates escrow workflows without requiring wallet funding.
+
+The application can also be configured to interact with deployed Stellar Testnet contracts using the provided contract addresses.
+
+
+---
+
 ## Technical Stack
 
 - **Smart Contracts (Backend)**: Rust, Soroban SDK (v22), Target `wasm32v1-none`
@@ -152,3 +236,28 @@ The script will:
 1. **Explicit Caller Auth (`require_auth()`)**: Handled the lack of standard `env.caller()` inside Soroban SDK 22 by passing explicit `caller: Address` arguments to state-modifying functions and immediately running `caller.require_auth()`.
 2. **Sandbox Mock Mode Fallback**: A fully responsive simulation layer storing data in `localStorage` allows instant UI testing without requiring funded Testnet wallets. The system automatically offers a "Sandbox Mode" toggle in the sidebar.
 3. **Cross-Contract Security whitelisting**: The Reputation contract ensures that only whitelisted escrow contracts registered by the Factory can call `rate_user` to increment scores.
+
+---
+
+## Challenge Requirements Coverage
+
+| Requirement                           | Status |
+| ------------------------------------- | ------ |
+| Public GitHub Repository              | ✅      |
+| Complete README Documentation         | ✅      |
+| 10+ Meaningful Commits                | ✅      |
+| Live Demo Deployment                  | ✅      |
+| Smart Contract Deployment             | ✅      |
+| Contract Interaction Transaction Hash | ✅      |
+| Mobile Responsive UI                  | ✅      |
+| CI/CD Pipeline                        | ✅      |
+| 3+ Passing Tests                      | ✅      |
+| Demo Video                            | ✅      |
+
+---
+
+## Repository
+
+GitHub Repository:
+
+https://github.com/akash-mondal-1/stellarflow-vault
