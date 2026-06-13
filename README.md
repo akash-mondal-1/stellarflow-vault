@@ -24,10 +24,22 @@ https://youtu.be/X1uhvF7iCZA
 CD3GUCIRBR3QB4HWFJR6R5FJDZBVZWDW2ZJMRRY5HYY4YV2PYPYAHRT4
 ```
 
+Explorer:
+
+```text
+https://lab.stellar.org/r/testnet/contract/CD3GUCIRBR3QB4HWFJR6R5FJDZBVZWDW2ZJMRRY5HYY4YV2PYPYAHRT4
+```
+
 ### Escrow Factory Contract
 
 ```text
 CATSAMXGYG55ZGYBAEFBQYFL6SSTGU2AZ4M7UXGB4SGWN4CSE24VRRHA
+```
+
+Explorer:
+
+```text
+https://lab.stellar.org/r/testnet/contract/CATSAMXGYG55ZGYBAEFBQYFL6SSTGU2AZ4M7UXGB4SGWN4CSE24VRRHA
 ```
 
 ### Escrow WASM Hash
@@ -44,6 +56,12 @@ The following transaction was executed successfully on Stellar Testnet during co
 
 ```text
 04c7d686e61f5b6ce8af660cfca5c33f9e815df42097c15b7de909f0bc92196f
+```
+
+Explorer:
+
+```text
+https://stellar.expert/explorer/testnet/tx/04c7d686e61f5b6ce8af660cfca5c33f9e815df42097c15b7de909f0bc92196f
 ```
 
 ---
@@ -78,6 +96,17 @@ The repository includes screenshots demonstrating:
 * Test Suite Passing (3+ Tests)
 
 Screenshots are available inside the `screenshots/` directory.
+
+### Screenshot Files
+
+- dashboard-desktop.png
+- dashboard-mobile.png
+- create-project-mobile.png
+- project-details-mobile.png
+- activity-feed.png
+- reputation-page.png
+- ci-cd-success.png
+- tests-passing.png
 
 ---
 
