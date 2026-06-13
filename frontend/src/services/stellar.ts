@@ -7,9 +7,9 @@ export const NETWORK_PASSPHRASE = 'Test SDF Network ; September 2015';
 export const RPC_URL = 'https://soroban-testnet.stellar.org';
 
 // Default Contract Addresses (to be updated on deployment)
-export const DEFAULT_FACTORY_ADDRESS = 'CDFACTORY123456789012345678901234567890123456789012345678';
-export const DEFAULT_REPUTATION_ADDRESS = 'CDREPUTATION12345678901234567890123456789012345678901234';
-export const DEFAULT_TOKEN_ADDRESS = 'CDLZFC3SYJADOXCSSO2ZBQXA3CD4CQW4G2L2VGW2T23D6MWOCT7OD6JH'; // XLM SAC on Testnet
+export const DEFAULT_FACTORY_ADDRESS = 'CATSAMXGYG55ZGYBAEFBQYFL6SSTGU2AZ4M7UXGB4SGWN4CSE24VRRHA';
+export const DEFAULT_REPUTATION_ADDRESS = 'CD3GUCIRBR3QB4HWFJR6R5FJDZBVZWDW2ZJMRRY5HYY4YV2PYPYAHRT4';
+export const DEFAULT_TOKEN_ADDRESS = 'CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC'; // XLM SAC on Testnet
 
 // Initializing Wallet Kit
 StellarWalletsKit.init({
@@ -255,7 +255,7 @@ export class StellarFlowService {
         // Parse custom ReputationInfo struct returned by contract
         const scVal = resultVal as any;
         const map = scVal.map();
-        
+
         let completed = 0;
         let ratingCount = 0;
         let score = 500;
@@ -422,7 +422,7 @@ export class StellarFlowService {
     if (this.isMockMode) {
       const store = getMockStore();
       const mockAddress = 'CDPROJECT' + Math.random().toString().replace('0.', '').substring(0, 16).padEnd(48, '9');
-      
+
       const newProject: ProjectDetails = {
         address: mockAddress,
         name,
@@ -477,14 +477,14 @@ export class StellarFlowService {
 
       const signedTx = await StellarWalletsKit.signTransaction(tx.toXDR());
       const submission = await rpcServer.sendTransaction(new StellarSdk.Transaction(signedTx.signedTxXdr, NETWORK_PASSPHRASE));
-      
+
       if (submission.status === 'PENDING') {
         let result = await rpcServer.getTransaction(submission.hash);
         while (result.status === 'NOT_FOUND' || (result.status === 'SUCCESS' && !(result as any).resultXdr)) {
           await new Promise((r) => setTimeout(r, 2000));
           result = await rpcServer.getTransaction(submission.hash);
         }
-        
+
         // Extract project address from return value
         const val = (result as any).returnValue;
         return val ? val.address().toString() : '';
@@ -504,7 +504,7 @@ export class StellarFlowService {
       if (project) {
         project.isDeposited = true;
         project.balance = amount;
-        
+
         store.events.unshift({
           id: 'e' + Date.now(),
           type: 'FundsDeposited',
@@ -800,9 +800,8 @@ export class StellarFlowService {
           type: 'DisputeResolved',
           contractAddress: projectAddress,
           timestamp: new Date().toISOString(),
-          data: `Dispute on Milestone #${index} resolved by Admin: ${
-            releaseToFreelancer ? 'Paid to Freelancer' : 'Refunded to Client'
-          }`,
+          data: `Dispute on Milestone #${index} resolved by Admin: ${releaseToFreelancer ? 'Paid to Freelancer' : 'Refunded to Client'
+            }`,
         });
 
         // Check completion
